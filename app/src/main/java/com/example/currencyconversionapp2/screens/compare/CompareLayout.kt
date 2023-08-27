@@ -64,7 +64,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
-import com.example.currencyconversionapp.R
+import com.example.currencyconversionapp2.R
 
 
 @Preview(showBackground = true, device = Devices.PIXEL_4, name = "Phone")

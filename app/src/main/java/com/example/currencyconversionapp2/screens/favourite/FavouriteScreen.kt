@@ -44,7 +44,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.currencyconversionapp.R
+import com.example.currencyconversionapp2.R
 
 
 @Composable
@@ -62,11 +62,11 @@ fun FavouriteScreen(onClick: () -> Unit) {
 
 val currenciesList = listOf<Currencies>(
     Currencies(R.drawable.united_states_of_america, "USD", "American Dollars"),
-    Currencies(R.drawable.united_kingdom, "GBP", "Pound Sterling"),
-    Currencies(R.drawable.japan, "JPY", "Japanese Yen"),
+    Currencies(R.drawable.united_kingdom_1, "GBP", "Pound Sterling"),
+    Currencies(R.drawable.japan_1, "JPY", "Japanese Yen"),
     Currencies(R.drawable.united_states_of_america, "USD", "American Dollars"),
-    Currencies(R.drawable.united_kingdom, "GBP", "Pound Sterling"),
-    Currencies(R.drawable.japan, "JPY", "Japanese Yen")
+    Currencies(R.drawable.united_kingdom_1, "GBP", "Pound Sterling"),
+    Currencies(R.drawable.japan_1, "JPY", "Japanese Yen")
 )
 
 
