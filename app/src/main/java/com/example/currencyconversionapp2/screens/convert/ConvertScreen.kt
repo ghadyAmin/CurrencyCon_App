@@ -56,6 +56,8 @@ import com.example.currencyconversionapp.api.APIViewModel
 import com.example.currencyconversionapp.api.model.Currencies
 import com.example.currencyconversionapp.screens.compare.DropDownMenu
 import com.example.currencyconversionapp.screens.favourite.CustomDialogUI
+import com.example.currencyconversionapp.screens.favourite.displayDataFromApi
+import com.example.currencyconversionapp.screens.favourite.displayDataFromApiMyPortfolio
 import com.example.currencyconversionapp2.R
 
 
@@ -67,33 +69,22 @@ fun ConvertScreen( viewModel : APIViewModel) {
         )
     }
     var amountFrom by remember {
-        mutableStateOf(1)
+        mutableStateOf("1")
     }
     var amountTo by remember {
         mutableStateOf(1)
     }
 
+
+    var baseCode by remember {
+        mutableStateOf("")
+    }
+
+
     val currencies = viewModel.currenciesFlow.collectAsState()
+    val convert = viewModel.conversionResultFlow.collectAsState()
 
-//    LazyColumn {
-//
-//        items(currencies.value?: listOf()) {
-//
-//            Column(modifier = Modifier) {
-//                Text(text = it.code)
-//                Text(text = it.name)
-//
-//                AsyncImage(model = it.icon_url, contentDescription = it.name)
-//                Divider(modifier = Modifier.height(4.dp))
-//                Spacer(modifier = Modifier.height(4.dp))
-//            }
-//        }
-//
-//    }
-
-
-    var listOfCurrenciesFromAPI = listOf<Currencies>()
-
+    //val conversionresult = viewModel.conversionResultFlow.collectAsState()
 
 
     Column(
@@ -103,35 +94,7 @@ fun ConvertScreen( viewModel : APIViewModel) {
             .verticalScroll(rememberScrollState())
     ) {
 
-        currencies.value?.forEach{
 
-
-
-
-
-            Column(modifier = Modifier) {
-                Text(text = it.code)
-                Text(text = it.name)
-
-                AsyncImage(modifier = Modifier.size(40.dp),
-                    model = ImageRequest
-                        .Builder(LocalContext.current)
-                        .data(it.icon_url)
-                        .decoderFactory(SvgDecoder.Factory())
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = it.name)
-                Divider(modifier = Modifier.height(4.dp))
-                Spacer(modifier = Modifier.height(4.dp))
-                var checked by remember {
-                    mutableStateOf(false)
-                }
-                Checkbox(checked =checked , onCheckedChange = {
-                    checked = it
-                // save data
-                })
-            }
-        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -165,9 +128,11 @@ fun ConvertScreen( viewModel : APIViewModel) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
-                value = amountFrom.toString(),
+                value = amountFrom,
                 onValueChange = {
-                    amountFrom = it.toIntOrNull() ?: 1
+                    amountFrom = it
+                    viewModel.currentSelectedAmount.value = it
+
                 },
                 shape = RoundedCornerShape(20.dp),
                 colors = TextFieldDefaults.textFieldColors(
@@ -189,7 +154,9 @@ fun ConvertScreen( viewModel : APIViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                DropDownMenu()
+                DropDownMenu(onItemClicked = {
+                    viewModel.currentSelectedFromCurrency.value = it
+                })
             }
 
         }
@@ -230,7 +197,9 @@ fun ConvertScreen( viewModel : APIViewModel) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                DropDownMenu()
+                DropDownMenu(onItemClicked = {
+                    viewModel.currentSelectedToCurrency.value = it
+                })
             }
             TextField(
                 value = amountTo.toString(),
@@ -253,10 +222,10 @@ fun ConvertScreen( viewModel : APIViewModel) {
                     .height(48.dp)
             )
 
-        }
+        }//viewModel.convertResult()
         Spacer(modifier = Modifier.height(18.dp))
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { viewModel},
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -338,54 +307,12 @@ fun ConvertScreen( viewModel : APIViewModel) {
             fontFamily = FontFamily(Font(R.font.poppins_regular))
         )
         Column {
-            ListItem(modifier = Modifier.padding(start = 10.dp, end = 10.dp),
-                headlineText = { Text(text = "USD", fontSize = 14.sp, fontWeight = FontWeight(400), fontFamily = FontFamily(Font(R.font.poppins_regular))) },
-                supportingText = { Text(text = "Currency", fontSize = 12.sp, fontWeight = FontWeight(400),color = Color(0xFFB8B8B8),
-                    fontFamily = FontFamily(Font(R.font.poppins_regular))) },
-                leadingContent ={ Image(
-                    painter = painterResource(id = R.drawable.united_states_of_america_1),
-                    contentDescription = ""
-                )}, trailingContent = { Text(text = "2.45", fontSize = 18.sp, fontWeight = FontWeight(500),
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)))}
+            
+            
+            
+            displayDataFromApiMyPortfolio(viewModel = viewModel)
+            
 
-            )
-            Spacer(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 25.dp, end = 25.dp)
-                    .height(1.dp)
-                    .background(color = Color(0xFFE9E9E9))
-            )
-            ListItem(modifier = Modifier.padding(start = 10.dp, end = 10.dp),
-                headlineText = { Text(text = "GPB",fontSize = 14.sp, fontWeight = FontWeight(400), fontFamily = FontFamily(Font(R.font.poppins_regular))) },
-                supportingText = { Text(text = "Currency", fontSize = 12.sp, fontWeight = FontWeight(400),color = Color(0xFFB8B8B8),
-                    fontFamily = FontFamily(Font(R.font.poppins_regular))) },
-                leadingContent ={ Image(
-                    painter = painterResource(id = R.drawable.united_kingdom_1),
-                    contentDescription = ""
-                )}, trailingContent = { Text(text = "2.45", fontSize = 18.sp, fontWeight = FontWeight(500),
-                    fontFamily = FontFamily(Font(R.font.poppins_regular)))}
-
-            )
-            Spacer(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 25.dp, end = 25.dp)
-                    .height(1.dp)
-                    .background(color = Color(0xFFE9E9E9))
-            )
-            ListItem(modifier = Modifier.padding(start = 10.dp, end = 10.dp),
-                headlineText = { Text(text = "JYP", fontSize = 14.sp, fontWeight = FontWeight(400), fontFamily = FontFamily(Font(R.font.poppins_regular))) },
-                supportingText = { Text(text = "Currency", fontSize = 12.sp, fontWeight = FontWeight(400),color = Color(0xFFB8B8B8),
-                    fontFamily = FontFamily(Font(R.font.poppins_regular))) },
-                leadingContent ={ Image(
-                    painter = painterResource(id = R.drawable.japan_1),
-                    contentDescription = ""
-                )}, trailingContent = { Text(text = "2.45", fontSize = 18.sp, fontWeight = FontWeight(500),
-                    fontFamily = FontFamily(Font(R.font.poppins_regular))
-                )}
-
-            )
             Spacer(
                 Modifier
                     .fillMaxWidth()
@@ -398,7 +325,7 @@ fun ConvertScreen( viewModel : APIViewModel) {
     }
 
 if(open){
-    CustomDialogUI(onClick = {open = false})
+    CustomDialogUI(onClick = {open = false}, viewModel = viewModel )
 }
 
 
@@ -407,9 +334,3 @@ if(open){
 
 
 
-//                    Icon(
-//                        painter = painterResource(id = R.drawable.plus_1),
-//                        contentDescription = "", modifier = Modifier.padding(end = 5.dp)
-//                    )
-//                    Text(text = "Add to Favorites", color = Color.Black, fontWeight = FontWeight(500),
-//                        fontSize = 12.sp)

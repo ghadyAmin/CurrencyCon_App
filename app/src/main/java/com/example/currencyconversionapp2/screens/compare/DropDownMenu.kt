@@ -44,10 +44,10 @@ import com.example.currencyconversionapp2.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropDownMenu(){
+fun DropDownMenu(onItemClicked: (String) -> Unit){
 
     var expanded by remember { (mutableStateOf(false)) }
-    val list = listOf<String>("EGP", "USD", "JYP", "KWD", "GBP")
+    val list = listOf<String>("EGP", "USD", "JYP", "KWD", "GBP", "EUR", "AED", "BHD", "OMR", "SAR", "QAR")
     var selectedItem by remember{ mutableStateOf("EGP") }
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
 
@@ -103,6 +103,7 @@ fun DropDownMenu(){
             DropdownMenuItem(text = { Text(text = label, fontSize = 14.sp, fontFamily = FontFamily(
                 Font(R.font.poppins_regular)
             )) }, onClick = {selectedItem = label
+                onItemClicked(selectedItem)
                 expanded = false })
         }
 

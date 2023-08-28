@@ -64,24 +64,24 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
+import androidx.lifecycle.ViewModel
+import com.example.currencyconversionapp.api.APIViewModel
 import com.example.currencyconversionapp2.R
 
 
-@Preview(showBackground = true, device = Devices.PIXEL_4, name = "Phone")
-@Preview(showBackground = true, device = Devices.NEXUS_7, name = "Tablet")
-@Preview(showBackground = true, device = Devices.PIXEL_C, name = "Large Tablet")
+
 @Composable
-fun CompareLayout(){
+fun CompareLayout(viewModel: APIViewModel){
 //TopImageWithText()
-    CompareBox()
+    CompareBox(viewModel)
     //LastBox()
-   // MyDialogUIPreview()
+    // MyDialogUIPreview()
 
 }
 
 /**
-* TOP IMAGE WITH TEXT FUNCTION CONTAINS BACKGROUND IMAGE AND ALL ELEMENTS ON TOP OF IT
-* */
+ * TOP IMAGE WITH TEXT FUNCTION CONTAINS BACKGROUND IMAGE AND ALL ELEMENTS ON TOP OF IT
+ * */
 @Composable
 fun TopImageWithText(
     modifier: Modifier = Modifier
@@ -121,24 +121,24 @@ fun TopImageWithText(
 
 
 
-            Text(
+        Text(
 
-                modifier = Modifier
-                    .height(160.dp)
-                    .fillMaxWidth()
-                    .wrapContentSize(Alignment.BottomCenter),
+            modifier = Modifier
+                .height(160.dp)
+                .fillMaxWidth()
+                .wrapContentSize(Alignment.BottomCenter),
 
-                text = "Currency Converter",
-                style = TextStyle(
-                    fontSize = 25.sp,
-                    fontFamily = FontFamily.Monospace,
-                    fontWeight = FontWeight(600),
-                    color = Color(0xFFFFFFFF),
+            text = "Currency Converter",
+            style = TextStyle(
+                fontSize = 25.sp,
+                fontFamily = FontFamily.Monospace,
+                fontWeight = FontWeight(600),
+                color = Color(0xFFFFFFFF),
 
                 )
 
 
-            )
+        )
 
 
         Text(
@@ -163,17 +163,17 @@ fun TopImageWithText(
 
 
 
-        }
-
-
     }
+
+
+}
 /**COMPARE BOX FUNCTION CONTAINS AMOUNT AND FROM TEXT, TEXT FIELD FOR AMOUNT, DROPDOWN MENU
 AND TARGET CURRENCY TEXT
-* */
+ * */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CompareBox(){
+private fun CompareBox(viewModel: APIViewModel){
 
     var amountFrom by remember {
         mutableStateOf(1)
@@ -203,7 +203,7 @@ private fun CompareBox(){
                     .weight(0.3F)
                     .padding(start = 36.dp)
             )
-           //  Spacer(modifier = Modifier.width(1.dp))
+            //  Spacer(modifier = Modifier.width(1.dp))
 
             Text(
                 modifier = Modifier
@@ -214,12 +214,12 @@ private fun CompareBox(){
                 fontWeight = FontWeight(600),
                 fontFamily = FontFamily(Font(R.font.poppins_regular))
 
-                )
+            )
 
 
 
 
-           }
+        }
 
 
         Row(
@@ -251,18 +251,20 @@ private fun CompareBox(){
 
             Row(
                 modifier = Modifier
-                    ,
+                ,
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
 
-         DropDownMenu()
+                DropDownMenu(onItemClicked = {
+                   viewModel.currentComparedFrom.value = it
+                })
 
 
 
             }
 
-         }
+        }
 
 
 
@@ -289,7 +291,7 @@ private fun CompareBox(){
                 fontWeight = FontWeight(600),
                 fontFamily = FontFamily(Font(R.font.poppins_regular))
 
-                )
+            )
         }
 
 
@@ -305,14 +307,18 @@ private fun CompareBox(){
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-               DropDownMenu()
+                DropDownMenu(onItemClicked = {
+                    viewModel.currentComparedTo1.value = it
+                })
             }
             Row(
                 modifier = Modifier,
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
-                DropDownMenu()
+                DropDownMenu(onItemClicked = {
+                    viewModel.currentComparedTo2.value = it
+                })
             }
         }
 
@@ -327,8 +333,8 @@ private fun CompareBox(){
             Row(
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape(20.dp)),
-                   // .width(180.dp),
-                    ///.background(color = Color(0xFFF9F9F9)),
+                // .width(180.dp),
+                ///.background(color = Color(0xFFF9F9F9)),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
@@ -422,10 +428,10 @@ private fun CompareBox(){
 
 
 
-       }
-
-
     }
+
+
+}
 
 
 
@@ -492,41 +498,3 @@ private fun CompareBox(){
 //    }
 //}
 //
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

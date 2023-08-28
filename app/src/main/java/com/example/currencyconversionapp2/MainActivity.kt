@@ -81,7 +81,7 @@ class MainActivity : ComponentActivity() {
                                 ConvertScreen(mainViewModel)
 
                             } else {
-                                CompareLayout()
+                                CompareLayout(mainViewModel)
                             }
                         }
                     }
