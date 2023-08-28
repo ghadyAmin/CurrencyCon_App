@@ -36,7 +36,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.currencyconversionapp.api.APIViewModel
@@ -61,6 +60,12 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
+//
+//                    val currency = mainViewModel.currenciesFlow.collectAsState()
+//                    LazyColumn{
+//                        items(currency.value?.image? ?: listOf<>())
+//
+//                    }
 
                     Column(modifier = Modifier) {
 
@@ -73,15 +78,21 @@ class MainActivity : ComponentActivity() {
                                 .weight(1F)
                         ) {
                             if (convertScreen) {
-                                ConvertScreen()
+                                ConvertScreen(mainViewModel)
 
                             } else {
                                 CompareLayout()
                             }
                         }
                     }
+                    mainViewModel.retrieveDataWithRetrofit()
 
-                    mainViewModel.getCurrency(this)
+                //    addApiCurrenciesInlist(favouriteModel = mainViewModel)
+//                   mainViewModel.remoteCurrencies.observe(this){remoteCurrencies ->
+//                       Log.d("MainActivity", "Cached Curencies: $this")
+//
+//                   }
+
 
 
                 }
@@ -89,6 +100,34 @@ class MainActivity : ComponentActivity() {
             }
         }
     }}
+
+
+
+
+//@Composable
+//fun addApiCurrenciesInlist(favouriteModel : APIViewModel ){
+//
+////    LaunchedEffect(Unit) {
+////        viewModel.getCarsFromAPI()
+////    }
+//
+//    favouriteModel.getCurrency(LocalContext.current)
+//
+//    val currLiveData = favouriteModel.currenciesFlow.collectAsState()
+//
+//    LazyColumn{
+////  items(currLiveData.value.z){}
+//
+//    }
+//
+//}
+//
+
+
+
+
+
+
 @Composable
 fun MainScreen(
     onConvertClick: () -> Unit,

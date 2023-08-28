@@ -14,12 +14,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -27,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -43,6 +49,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
+import com.example.currencyconversionapp.api.APIViewModel
+import com.example.currencyconversionapp.api.model.Currencies
 import com.example.currencyconversionapp.screens.compare.DropDownMenu
 import com.example.currencyconversionapp.screens.favourite.CustomDialogUI
 import com.example.currencyconversionapp2.R
@@ -50,8 +61,7 @@ import com.example.currencyconversionapp2.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-@Preview
-fun ConvertScreen() {
+fun ConvertScreen( viewModel : APIViewModel) {
     var open by remember {
         mutableStateOf(false
         )
@@ -63,12 +73,65 @@ fun ConvertScreen() {
         mutableStateOf(1)
     }
 
+    val currencies = viewModel.currenciesFlow.collectAsState()
+
+//    LazyColumn {
+//
+//        items(currencies.value?: listOf()) {
+//
+//            Column(modifier = Modifier) {
+//                Text(text = it.code)
+//                Text(text = it.name)
+//
+//                AsyncImage(model = it.icon_url, contentDescription = it.name)
+//                Divider(modifier = Modifier.height(4.dp))
+//                Spacer(modifier = Modifier.height(4.dp))
+//            }
+//        }
+//
+//    }
+
+
+    var listOfCurrenciesFromAPI = listOf<Currencies>()
+
+
+
     Column(
         modifier = Modifier
             .background(Color.White)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+
+        currencies.value?.forEach{
+
+
+
+
+
+            Column(modifier = Modifier) {
+                Text(text = it.code)
+                Text(text = it.name)
+
+                AsyncImage(modifier = Modifier.size(40.dp),
+                    model = ImageRequest
+                        .Builder(LocalContext.current)
+                        .data(it.icon_url)
+                        .decoderFactory(SvgDecoder.Factory())
+                        .crossfade(true)
+                        .build(),
+                    contentDescription = it.name)
+                Divider(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(4.dp))
+                var checked by remember {
+                    mutableStateOf(false)
+                }
+                Checkbox(checked =checked , onCheckedChange = {
+                    checked = it
+                // save data
+                })
+            }
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
