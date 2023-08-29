@@ -34,15 +34,24 @@ we hope to faciliate the currency connversion between different currencies to ma
 1. Click on the "Convert" button to perform the currency conversion.
  <img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/674e7d3b-e2f4-40dd-9f37-f10d9371d3ba">
 
+
+
+
 1. The converted amount will be displayed on the screen.
+
+
+
 
 1. Click on the "Compare" button to compare between different currencies.
 <img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/984795d1-378b-4eee-ba50-10b927b82dbd" >
 
 
+
+
 1. Click on add to favourites text button to select currency which you prefer it
    
 <img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/41c6a861-c8b3-480d-918c-eefc9aaf3f31">
+
 
 
 
