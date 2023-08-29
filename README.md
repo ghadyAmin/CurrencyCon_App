@@ -25,18 +25,26 @@ we hope to faciliate the currency connversion between different currencies to ma
 ## Usage
 
 1. Select the source currency from the dropdown menu.
+ 
 
 1. Enter the amount you want to convert.
 
 1. Select the target currency from the dropdown menu.
 
 1. Click on the "Convert" button to perform the currency conversion.
+ <img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/674e7d3b-e2f4-40dd-9f37-f10d9371d3ba">
 
 1. The converted amount will be displayed on the screen.
 
 1. Click on the "Compare" button to compare between different currencies.
+<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/984795d1-378b-4eee-ba50-10b927b82dbd" >
 
-1. Click on add to favourites text button to select currency which you prefer it  
+
+1. Click on add to favourites text button to select currency which you prefer it
+   
+<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/41c6a861-c8b3-480d-918c-eefc9aaf3f31">
+
+
 
 ## Technologies Used
 
@@ -71,9 +79,9 @@ Contributions are welcome! If you have any suggestions, bug fixes, or new featur
 ## Screenshots
 <div>
   
-<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/418534f3-214b-4013-9367-1fcbadbefc4b">
-<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/c0bc395f-8fde-4f6e-beb3-de1ed21eb287"> 
-<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/f7d8b351-93df-4bfe-a57b-a4e822129569" >
+<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/674e7d3b-e2f4-40dd-9f37-f10d9371d3ba">
+<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/41c6a861-c8b3-480d-918c-eefc9aaf3f31"> 
+<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/984795d1-378b-4eee-ba50-10b927b82dbd" >
 
 </div>
 
