@@ -29,6 +29,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -100,7 +101,7 @@ fun DropDownMenu(onItemClicked: (String) -> Unit){
             .width(with(LocalDensity.current){textFieldSize.width.toDp()})) {
 
         list.forEach { label ->
-            DropdownMenuItem(text = { Text(text = label, fontSize = 14.sp, fontFamily = FontFamily(
+            DropdownMenuItem( text = { Text(text = label, fontSize = 14.sp, fontFamily = FontFamily(
                 Font(R.font.poppins_regular)
             )) }, onClick = {selectedItem = label
                 onItemClicked(selectedItem)

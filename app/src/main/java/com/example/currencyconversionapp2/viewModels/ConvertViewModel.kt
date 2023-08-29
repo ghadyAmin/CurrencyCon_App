@@ -35,7 +35,6 @@ class ConvertViewModel: ViewModel() {
         viewModelScope.launch {
             val apiService = APIClient.getClient()?.create(APIRemoteData::class.java)
             try {
-               // val convertRes = apiService?.getConversionResult(base, target, amount)
 
                 val call: Call<ConversionResult> = apiService!!.getConversionResult(current, target, amount)
 
@@ -46,17 +45,14 @@ class ConvertViewModel: ViewModel() {
                             val model: ConversionResult? = response.body()
 
                             val resp =
-                                model!!.conversion_result
+                                model!!.data.conversion_result
 
-                            //  "Response Code : " + response.code() +
 
-                            // result.value = resp.toString()
                             convertResult.value = resp.toString()
-                            // mutableConversionResultFlow.value = resp
+
                         }}
                         override fun onFailure(call: Call<ConversionResult>, t: Throwable) {
-                            // we get error response from API.
-                            //  result.value = "Error found is : " + t.message
+
                         }
 
 

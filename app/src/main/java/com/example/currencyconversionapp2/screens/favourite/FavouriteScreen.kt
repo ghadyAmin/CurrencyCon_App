@@ -16,44 +16,32 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.ViewModel
 import coil.compose.AsyncImage
 import coil.decode.SvgDecoder
 import coil.request.ImageRequest
-import com.example.currencyconversionapp.api.APIViewModel
-import com.example.currencyconversionapp.api.model.Currency
 import com.example.currencyconversionapp2.R
 import com.example.currencyconversionapp2.viewModels.FavouritesViewModel
 
@@ -229,15 +217,21 @@ fun currencyList( favouritesViewModel: FavouritesViewModel ){
             }
 
             Row(
-                modifier = Modifier.fillMaxWidth().wrapContentSize(Alignment.TopEnd)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentSize(Alignment.TopEnd)
             )
             {
                 RoundedCheckbox(selected = selected, onChecked = {
 
                     if (selected) {
+
                         selected = false
+                        myPortfolioList.remove(Currencies(it.icon_url, it.code, it.name))
+
                     } else {
                         selected = true
+                        myPortfolioList.add(Currencies(it.icon_url, it.code, it.name))
                     }
                 })
             }
@@ -265,86 +259,13 @@ fun currencyList( favouritesViewModel: FavouritesViewModel ){
 
 
 
-        @Composable
-        fun DisplayCurrencies(currency: Currencies) {
-
-            Row {
-                Image(
-                    painter = painterResource(currency.image),
-                    contentDescription = "User profile pic",
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(CircleShape),
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-
-                Column(
-                    modifier = Modifier,
-
-                    ) {
-
-                    Text(
-                        modifier = Modifier
-                            .width(31.dp)
-                            .height(24.dp),
-                        text = currency.id, style = TextStyle(
-                            fontSize = 14.sp,
-                            lineHeight = 23.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                            fontWeight = FontWeight(400),
-                            color = Color(0xFF121212),
-                        )
-                    )
 
 
-                    Spacer(modifier = Modifier.height(5.dp))
-
-
-                    Text(
-                        text = currency.title, style = TextStyle(
-                            fontSize = 12.sp,
-                            lineHeight = 19.sp,
-                            fontFamily = FontFamily(Font(R.font.poppins_regular)),
-                            fontWeight = FontWeight(400),
-                            color = Color(0xFFB8B8B8),
-                        )
-                    )
-
-
-                }
-                var selected by remember {
-                    mutableStateOf(false)
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.End
-                )
-                {
-                    RoundedCheckbox(selected = selected, onChecked = {
-
-                        if (selected) {
-                            selected = false
-                        } else {
-                            selected = true
-                        }
-                    })
-                }
-
-
-            }
-
-
-        }
-
-
-
-
+val myPortfolioList = mutableStateListOf<Currencies>()
 
 
 data class Currencies(
-    var image: Int,
+    var image: String,
     var id: String,
     var title:String,
 

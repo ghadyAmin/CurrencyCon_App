@@ -1,81 +1,48 @@
 package com.example.currencyconversionapp.screens.compare
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Devices
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.toSize
-import androidx.lifecycle.ViewModel
-import com.example.currencyconversionapp.api.APIViewModel
 import com.example.currencyconversionapp2.R
-import com.example.currencyconversionapp2.viewModels.FavouritesViewModel
+import com.example.currencyconversionapp2.viewModels.CompareViewModel
 
 
 @Composable
-fun CompareLayout(favouritesViewModel: FavouritesViewModel){
-//TopImageWithText()
-    CompareBox(favouritesViewModel)
-    //LastBox()
-    // MyDialogUIPreview()
+fun CompareLayout(compareViewModel: CompareViewModel){
+
+    CompareBox(compareViewModel)
+
 
 }
 
@@ -87,7 +54,7 @@ AND TARGET CURRENCY TEXT
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CompareBox(favouritesViewModel: FavouritesViewModel){
+private fun CompareBox(compareViewModel: CompareViewModel){
 
     var amountFrom by remember {
         mutableStateOf(1)
@@ -95,6 +62,7 @@ private fun CompareBox(favouritesViewModel: FavouritesViewModel){
     var amountTo by remember {
         mutableStateOf(1)
     }
+
 
 
 
@@ -158,7 +126,7 @@ private fun CompareBox(favouritesViewModel: FavouritesViewModel){
                     .border(width = 0.5.dp, color = Color(0xFFC5C5C5), shape = RoundedCornerShape(size = 20.dp))
                     .padding(0.5.dp)
                     .width(160.dp)
-                    .height(48.dp)
+                    .height(50.dp)
                     .background(color = Color(0xFFF9F9F9), shape = RoundedCornerShape(size = 20.dp))
 
             )
@@ -171,7 +139,7 @@ private fun CompareBox(favouritesViewModel: FavouritesViewModel){
             ) {
 
                 DropDownMenu(onItemClicked = {
-                  // viewModel.currentComparedFrom.value = it
+                    compareViewModel.currentSelectedBaseCurrency = it
                 })
 
 
@@ -222,7 +190,7 @@ private fun CompareBox(favouritesViewModel: FavouritesViewModel){
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 DropDownMenu(onItemClicked = {
-                   // viewModel.currentComparedTo1.value = it
+                    compareViewModel.firstTargetCurrencyCode = it
                 })
             }
             Row(
@@ -231,7 +199,7 @@ private fun CompareBox(favouritesViewModel: FavouritesViewModel){
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 DropDownMenu(onItemClicked = {
-                  //  viewModel.currentComparedTo2.value = it
+                    compareViewModel.secondTargetCurrencyCode = it
                 })
             }
         }
@@ -247,13 +215,11 @@ private fun CompareBox(favouritesViewModel: FavouritesViewModel){
             Row(
                 modifier = Modifier
                     .clip(shape = RoundedCornerShape(20.dp)),
-                // .width(180.dp),
-                ///.background(color = Color(0xFFF9F9F9)),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 TextField(
-                    value = amountFrom.toString(),
+                    value = compareViewModel.firstTargetCurrencyRate.value,
                     onValueChange = {
                         amountFrom = it.toIntOrNull() ?: 1
                     },
@@ -267,13 +233,13 @@ private fun CompareBox(favouritesViewModel: FavouritesViewModel){
                         .border(width = 0.5.dp, color = Color(0xFFC5C5C5), shape = RoundedCornerShape(size = 20.dp))
                         .padding(0.5.dp)
                         .width(160.dp)
-                        .height(48.dp)
+                        .height(50.dp)
                         .background(color = Color(0xFFF9F9F9), shape = RoundedCornerShape(size = 20.dp))
 
                 )
             }
             TextField(
-                value = amountFrom.toString(),
+                value = compareViewModel.secondTargetCurrencyRate.value,
                 onValueChange = {
                     amountFrom = it.toIntOrNull() ?: 1
                 },
@@ -312,7 +278,7 @@ private fun CompareBox(favouritesViewModel: FavouritesViewModel){
 
         Spacer(modifier = Modifier.height(18.dp))
         Button(
-            onClick = { /*TODO*/ },
+            onClick = { compareViewModel.compareCurrency(amountFrom) },
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -352,63 +318,3 @@ private fun CompareBox(favouritesViewModel: FavouritesViewModel){
 
 
 
-//@OptIn(ExperimentalMaterial3Api::class)
-//@Composable
-//fun LastBox(){
-//
-//
-//   Box(modifier = Modifier
-//       .fillMaxWidth()
-//       .height(100.dp)
-//   ) {
-//        Column (modifier = Modifier
-//            .fillMaxSize()
-//            .width(100.dp)){
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 20.dp, vertical = 500.dp)
-//            ) {
-//                TextField(
-//                    value = "hello", onValueChange = {},
-//                    colors = TextFieldDefaults.textFieldColors(
-//                        containerColor = Color(0xFFF9F9F9),
-//                        focusedIndicatorColor = Color.Transparent,
-//                        unfocusedIndicatorColor = Color.Transparent,
-//                        disabledIndicatorColor = Color.Transparent
-//                    ),
-//                    modifier = Modifier
-//                        .border(
-//                            width = 1.dp, color = Color(0xFFC5C5C5),
-//                            shape = RoundedCornerShape(size = 20.dp)
-//                        )
-//
-//                        .padding(1.dp)
-//                        .width(130.dp)
-//                        .height(60.dp)
-//                        .background(
-//                            color = Color(0xFFF9F9F9),
-//                            shape = RoundedCornerShape(size = 20.dp)
-//                        ),
-//
-//                    )
-//
-//
-//
-//                Row(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .padding(horizontal = 50.dp)
-//                ) {
-//
-//                    DropDownMenu()
-//
-//
-//                }
-//
-//
-//            }
-//        }
-//    }
-//}
-//

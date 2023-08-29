@@ -1,7 +1,6 @@
 package com.example.currencyconversionapp.screens.convert
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,14 +20,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,26 +40,26 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.currencyconversionapp.api.APIViewModel
-import com.example.currencyconversionapp.api.model.ConversionResult
+import coil.compose.AsyncImage
+import coil.decode.SvgDecoder
+import coil.request.ImageRequest
 import com.example.currencyconversionapp.screens.compare.DropDownMenu
 import com.example.currencyconversionapp.screens.favourite.CustomDialogUI
+import com.example.currencyconversionapp.screens.favourite.myPortfolioList
 import com.example.currencyconversionapp2.R
-import com.example.currencyconversionapp2.api.data.APIRemoteData
 import com.example.currencyconversionapp2.viewModels.ConvertViewModel
 import com.example.currencyconversionapp2.viewModels.FavouritesViewModel
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 
 @SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: ConvertViewModel) {
+
+    val myPortfolioCurrencies = remember{ myPortfolioList}
 
 
     var open by remember {
@@ -218,7 +216,7 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
                     .height(50.dp)
             )
 
-        }//viewModel.convertResult()
+        }
         Spacer(modifier = Modifier.height(18.dp))
         Button(
             onClick = { convertViewModel.convert(current, target, amount)},
@@ -302,21 +300,86 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
             fontWeight = FontWeight(400),
             fontFamily = FontFamily(Font(R.font.poppins_regular))
         )
-        Column {
-            
-            
-            
 
-            
 
-            Spacer(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = 25.dp, end = 25.dp)
-                    .height(1.dp)
-                    .background(color = Color(0xFFE9E9E9))
-            )
-        }
+            Column {
+                myPortfolioCurrencies.forEach {
+                   Row {
+                       AsyncImage(
+                           modifier = Modifier.size(40.dp),
+                           model = ImageRequest
+                               .Builder(LocalContext.current)
+                               .data(it.image)
+                               .decoderFactory(SvgDecoder.Factory())
+                               .crossfade(true)
+                               .build(),
+                           contentDescription = it.title
+                       )
+
+                       Spacer(modifier = Modifier.width(10.dp))
+
+
+                       Column(
+                           modifier = Modifier,
+
+                           ) {
+
+                           Text(
+                               modifier = Modifier
+                                   .width(40.dp)
+                                   .height(24.dp),
+                               text = it.id, style = TextStyle(
+                                   fontSize = 14.sp,
+                                   lineHeight = 23.sp,
+                                   fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                                   fontWeight = FontWeight(400),
+                                   color = Color(0xFF121212),
+                               )
+                           )
+
+
+                           Spacer(modifier = Modifier.height(1.dp))
+
+
+                           Text(
+                               text = it.title, style = TextStyle(
+                                   fontSize = 12.sp,
+                                   lineHeight = 19.sp,
+                                   fontFamily = FontFamily(Font(R.font.poppins_regular)),
+                                   fontWeight = FontWeight(400),
+                                   color = Color(0xFFB8B8B8),
+                               )
+                           )
+
+
+
+
+                       }
+                       Spacer(
+                           Modifier
+                               .fillMaxWidth()
+                               .padding(start = 25.dp, end = 25.dp)
+                               .height(2.dp)
+                               .background(color = Color.White)
+                       )
+
+
+                   }
+
+                    Divider(
+                        modifier = Modifier
+                            .width(400.dp)
+                            .height(0.9633.dp)
+                            .background(color = Color(0xFFB9C1D9))
+                    )
+
+                }
+
+
+
+
+            }
+
 
     }
 

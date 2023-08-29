@@ -4,7 +4,6 @@ data class ComparisonObject(
 
     val base_code: String,
     val target_codes: List<String>,
-    val conversion_rates: ComparisonRates,
 
 
 

@@ -8,17 +8,20 @@ import androidx.lifecycle.viewModelScope
 import com.example.currencyconversionapp.api.model.Currency
 import com.example.currencyconversionapp2.api.data.APIRemoteData
 import com.example.currencyconversionapp2.api.data.network.APIClient
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 
 class FavouritesViewModel : ViewModel(){
 
-        private val mutableCurrenciesFlow = MutableStateFlow<List<Currency>?>(null)
-    val currenciesFlow: StateFlow<List<Currency>?> = mutableCurrenciesFlow
+        private val mutableCurrenciesFlow = MutableStateFlow<List<Currency>>(mutableListOf())
+    val currenciesFlow: StateFlow<List<Currency>> = mutableCurrenciesFlow
 
 
-    var currenciesList: List<Currency?> by mutableStateOf(listOf())
+    var currenciesList: List<Currency> by mutableStateOf(listOf())
 var errorMessage: String by mutableStateOf("")
 
     fun getAddToFavouritesList(){
@@ -27,7 +30,12 @@ var errorMessage: String by mutableStateOf("")
             try {
                 val currencyList = apiService?.getCurrencies()
 
-                    mutableCurrenciesFlow.value = currencyList
+
+                withContext(Dispatchers.Main){
+                    currencyList?.let {  mutableCurrenciesFlow.value = it.data }
+
+                }
+
 
             }catch (e : Exception){
                 errorMessage = e.message.toString()
