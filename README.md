@@ -76,12 +76,5 @@ we hope to faciliate the currency connversion between different currencies to ma
 
 Contributions are welcome! If you have any suggestions, bug fixes, or new features to propose, please submit a pull request. Ensure that your code follows the project's coding conventions and includes appropriate tests.
 
-## Screenshots
-<div>
-  
-<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/674e7d3b-e2f4-40dd-9f37-f10d9371d3ba">
-<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/41c6a861-c8b3-480d-918c-eefc9aaf3f31"> 
-<img src ="https://github.com/ghadyAmin/CurrencyCon_App/assets/110892825/984795d1-378b-4eee-ba50-10b927b82dbd" >
 
-</div>
 
