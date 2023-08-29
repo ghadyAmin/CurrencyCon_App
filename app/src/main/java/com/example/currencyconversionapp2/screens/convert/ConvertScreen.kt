@@ -58,12 +58,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 
-//@SuppressLint("StateFlowValueCalledInComposition")
+@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: ConvertViewModel) {
 
-   val conversion = convertViewModel.conversionResultFlow.collectAsState()
 
     var open by remember {
         mutableStateOf(false
@@ -73,9 +72,6 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
         mutableStateOf(0.0)
     }
 
-    var amountTo by remember {
-        mutableStateOf(TextFieldValue())
-    }
 
     var target by remember {
         mutableStateOf("")
@@ -83,13 +79,6 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
     var current by remember {
         mutableStateOf("")
     }
-
-    val response : MutableState<String> = remember{ mutableStateOf("") }
-
-//    val currencies = viewModel.currenciesFlow.collectAsState()
-//    val convert = viewModel.conversionResultFlow.collectAsState()
-
-    //val conversionresult = viewModel.conversionResultFlow.collectAsState()
 
 
     Column(
@@ -152,7 +141,7 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
                         shape = RoundedCornerShape(size = 20.dp)
                     )
                     .width(130.dp)
-                    .height(48.dp)
+                    .height(50.dp)
             )
             Row(
                 modifier = Modifier,
@@ -161,7 +150,7 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
             ) {
                 DropDownMenu(onItemClicked = {
                    current = it
-                   // viewModel.currentSelectedFromCurrency.value = it
+
                 })
             }
 
@@ -205,13 +194,13 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
             ) {
                 DropDownMenu(onItemClicked = {
                     target = it
-                    //viewModel.currentSelectedToCurrency.value = it
+
                 })
             }
             TextField(
-                value = response.value,
+                value = convertViewModel.convertResult.value,
                 onValueChange = {
-                    response.value = it
+
                 },
                 shape = RoundedCornerShape(20.dp),
                 colors = TextFieldDefaults.textFieldColors(
@@ -226,13 +215,13 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
                         shape = RoundedCornerShape(size = 20.dp)
                     )
                     .width(130.dp)
-                    .height(48.dp)
+                    .height(50.dp)
             )
 
         }//viewModel.convertResult()
         Spacer(modifier = Modifier.height(18.dp))
         Button(
-            onClick = { convertViewModel.convert(current, target, amount, response)},
+            onClick = { convertViewModel.convert(current, target, amount)},
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -317,7 +306,7 @@ fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: 
             
             
             
-            //displayDataFromApiMyPortfolio(viewModel = viewModel)
+
             
 
             Spacer(

@@ -21,7 +21,7 @@ class ConvertViewModel: ViewModel() {
 
     var currentSelectedToCurrency = MutableStateFlow<String>("")
     var currentSelectedAmount = MutableStateFlow<Double>(0.0)
-    var convertResult = MutableStateFlow<String>("")
+    var convertResult = mutableStateOf("0")
 
 
 
@@ -31,7 +31,7 @@ class ConvertViewModel: ViewModel() {
 
     var errorMessage: String by mutableStateOf("")
 
-    fun convert(current: String, target: String, amount: Double, result: MutableState<String>){
+    fun convert(current: String, target: String, amount: Double){
         viewModelScope.launch {
             val apiService = APIClient.getClient()?.create(APIRemoteData::class.java)
             try {
@@ -42,24 +42,28 @@ class ConvertViewModel: ViewModel() {
                 call!!.enqueue(object : Callback<ConversionResult> {
                     override fun onResponse(call: Call<ConversionResult>, response: Response<ConversionResult>) {
 
-                        val model: ConversionResult? = response.body()
+                        if(response.isSuccessful){
+                            val model: ConversionResult? = response.body()
 
-                        val resp =
-                            model!!.conversion_result
+                            val resp =
+                                model!!.conversion_result
 
-                      //  "Response Code : " + response.code() +
+                            //  "Response Code : " + response.code() +
 
-                                result.value = resp.toString()
-                        convertResult.value = resp.toString()
-                       // mutableConversionResultFlow.value = resp
-                    }
-                    override fun onFailure(call: Call<ConversionResult>, t: Throwable) {
-                        // we get error response from API.
-                        result.value = "Error found is : " + t.message
-                    }
+                            // result.value = resp.toString()
+                            convertResult.value = resp.toString()
+                            // mutableConversionResultFlow.value = resp
+                        }}
+                        override fun onFailure(call: Call<ConversionResult>, t: Throwable) {
+                            // we get error response from API.
+                            //  result.value = "Error found is : " + t.message
+                        }
 
 
-            })} catch (e : Exception){
+                    })
+
+
+                       } catch (e : Exception){
                 errorMessage = e.message.toString()
             }
 

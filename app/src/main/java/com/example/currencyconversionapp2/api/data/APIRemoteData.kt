@@ -21,12 +21,12 @@ interface APIRemoteData {
                                   @Path("target") target: String): ConversionRate
 
     @GET("currencies/{current}/{target}/{amount}")
-    suspend fun getConversionResult(@Path("current") current: String,
+     fun getConversionResult(@Path("current") current: String,
                                     @Path("target") target: String,
                                     @Path("amount") amount : Double): Call<ConversionResult>
 
     @POST("currencies/comparison")
-    fun compareRtaes(@Body comparison : ComparisonObject): Call<ComparisonObject?>?
+    fun compareRates(@Body comparison : ComparisonObject): Call<ComparisonObject>
 
 
 }
