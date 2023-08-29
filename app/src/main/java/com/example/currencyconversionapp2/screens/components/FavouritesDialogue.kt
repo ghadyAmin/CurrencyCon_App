@@ -13,16 +13,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.currencyconversionapp.api.APIViewModel
+import com.example.currencyconversionapp2.viewModels.FavouritesViewModel
 
 /**
  * CREATES A DIALOGUE THAT CONTAINS OR RETURNS FAVOURITES LIST
  *
  *
  * */
-
+//viewModel: APIViewModel
 @Composable
 fun CustomDialogUI(modifier: Modifier = Modifier.fillMaxSize().background(Color.Transparent), onClick : () -> Unit,
-                   viewModel: APIViewModel) {
+                    favouritesViewModel: FavouritesViewModel) {
 
     AlertDialog(
         modifier = Modifier.height(670.dp),
@@ -34,7 +35,7 @@ fun CustomDialogUI(modifier: Modifier = Modifier.fillMaxSize().background(Color.
                 .background(Color.White),
         ) {
 
-            FavouriteScreen(onClick, viewModel)
+            FavouriteScreen(onClick, favouritesViewModel)
 
 
         }

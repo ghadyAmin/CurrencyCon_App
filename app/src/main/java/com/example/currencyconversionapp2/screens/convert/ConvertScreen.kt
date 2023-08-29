@@ -1,6 +1,7 @@
 package com.example.currencyconversionapp.screens.convert
 
-import androidx.compose.foundation.Image
+import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -14,23 +15,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,44 +42,52 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
-import coil.decode.SvgDecoder
-import coil.request.ImageRequest
 import com.example.currencyconversionapp.api.APIViewModel
-import com.example.currencyconversionapp.api.model.Currencies
+import com.example.currencyconversionapp.api.model.ConversionResult
 import com.example.currencyconversionapp.screens.compare.DropDownMenu
 import com.example.currencyconversionapp.screens.favourite.CustomDialogUI
-import com.example.currencyconversionapp.screens.favourite.displayDataFromApi
-import com.example.currencyconversionapp.screens.favourite.displayDataFromApiMyPortfolio
 import com.example.currencyconversionapp2.R
+import com.example.currencyconversionapp2.api.data.APIRemoteData
+import com.example.currencyconversionapp2.viewModels.ConvertViewModel
+import com.example.currencyconversionapp2.viewModels.FavouritesViewModel
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
+//@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConvertScreen( viewModel : APIViewModel) {
+fun ConvertScreen(  favouritesViewModel: FavouritesViewModel, convertViewModel: ConvertViewModel) {
+
+   val conversion = convertViewModel.conversionResultFlow.collectAsState()
+
     var open by remember {
         mutableStateOf(false
         )
     }
-    var amountFrom by remember {
-        mutableStateOf("1")
+    var amount by remember {
+        mutableStateOf(0.0)
     }
+
     var amountTo by remember {
-        mutableStateOf(1)
+        mutableStateOf(TextFieldValue())
     }
 
-
-    var baseCode by remember {
+    var target by remember {
+        mutableStateOf("")
+    }
+    var current by remember {
         mutableStateOf("")
     }
 
+    val response : MutableState<String> = remember{ mutableStateOf("") }
 
-    val currencies = viewModel.currenciesFlow.collectAsState()
-    val convert = viewModel.conversionResultFlow.collectAsState()
+//    val currencies = viewModel.currenciesFlow.collectAsState()
+//    val convert = viewModel.conversionResultFlow.collectAsState()
 
     //val conversionresult = viewModel.conversionResultFlow.collectAsState()
 
@@ -128,10 +133,10 @@ fun ConvertScreen( viewModel : APIViewModel) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             TextField(
-                value = amountFrom,
+                value = amount.toString(),
                 onValueChange = {
-                    amountFrom = it
-                    viewModel.currentSelectedAmount.value = it
+                    amount = it.toDouble()
+                   // viewModel.currentSelectedAmount.value = it
 
                 },
                 shape = RoundedCornerShape(20.dp),
@@ -155,7 +160,8 @@ fun ConvertScreen( viewModel : APIViewModel) {
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 DropDownMenu(onItemClicked = {
-                    viewModel.currentSelectedFromCurrency.value = it
+                   current = it
+                   // viewModel.currentSelectedFromCurrency.value = it
                 })
             }
 
@@ -198,13 +204,14 @@ fun ConvertScreen( viewModel : APIViewModel) {
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 DropDownMenu(onItemClicked = {
-                    viewModel.currentSelectedToCurrency.value = it
+                    target = it
+                    //viewModel.currentSelectedToCurrency.value = it
                 })
             }
             TextField(
-                value = amountTo.toString(),
+                value = response.value,
                 onValueChange = {
-                    amountTo = it.toIntOrNull() ?: 1
+                    response.value = it
                 },
                 shape = RoundedCornerShape(20.dp),
                 colors = TextFieldDefaults.textFieldColors(
@@ -225,7 +232,7 @@ fun ConvertScreen( viewModel : APIViewModel) {
         }//viewModel.convertResult()
         Spacer(modifier = Modifier.height(18.dp))
         Button(
-            onClick = { viewModel},
+            onClick = { convertViewModel.convert(current, target, amount, response)},
             shape = RoundedCornerShape(20.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -310,7 +317,7 @@ fun ConvertScreen( viewModel : APIViewModel) {
             
             
             
-            displayDataFromApiMyPortfolio(viewModel = viewModel)
+            //displayDataFromApiMyPortfolio(viewModel = viewModel)
             
 
             Spacer(
@@ -325,11 +332,12 @@ fun ConvertScreen( viewModel : APIViewModel) {
     }
 
 if(open){
-    CustomDialogUI(onClick = {open = false}, viewModel = viewModel )
+    CustomDialogUI(onClick = {open = false},  favouritesViewModel = favouritesViewModel )
 }
 
 
 }
+
 
 
 

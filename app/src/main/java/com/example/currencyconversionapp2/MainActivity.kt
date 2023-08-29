@@ -42,9 +42,16 @@ import com.example.currencyconversionapp.api.APIViewModel
 import com.example.currencyconversionapp.screens.compare.CompareLayout
 import com.example.currencyconversionapp.screens.convert.ConvertScreen
 import com.example.currencyconversionapp2.ui.theme.CurrencyConversionApp2Theme
+import com.example.currencyconversionapp2.viewModels.ConvertViewModel
+import com.example.currencyconversionapp2.viewModels.FavouritesViewModel
 
 class MainActivity : ComponentActivity() {
     private val mainViewModel: APIViewModel by viewModels()
+
+    private val favViewModel: FavouritesViewModel by viewModels()
+
+    private val convertViewModel: ConvertViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -78,14 +85,15 @@ class MainActivity : ComponentActivity() {
                                 .weight(1F)
                         ) {
                             if (convertScreen) {
-                                ConvertScreen(mainViewModel)
+                                ConvertScreen(favouritesViewModel = favViewModel, convertViewModel = convertViewModel )
 
                             } else {
-                                CompareLayout(mainViewModel)
+                                CompareLayout(favViewModel)
                             }
                         }
                     }
-                    mainViewModel.retrieveDataWithRetrofit()
+                    favViewModel.getAddToFavouritesList()
+                  //  mainViewModel.getCurrency(this)
 
                 //    addApiCurrenciesInlist(favouriteModel = mainViewModel)
 //                   mainViewModel.remoteCurrencies.observe(this){remoteCurrencies ->

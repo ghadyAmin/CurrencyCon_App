@@ -67,113 +67,27 @@ import androidx.compose.ui.unit.toSize
 import androidx.lifecycle.ViewModel
 import com.example.currencyconversionapp.api.APIViewModel
 import com.example.currencyconversionapp2.R
-
+import com.example.currencyconversionapp2.viewModels.FavouritesViewModel
 
 
 @Composable
-fun CompareLayout(viewModel: APIViewModel){
+fun CompareLayout(favouritesViewModel: FavouritesViewModel){
 //TopImageWithText()
-    CompareBox(viewModel)
+    CompareBox(favouritesViewModel)
     //LastBox()
     // MyDialogUIPreview()
 
 }
 
-/**
- * TOP IMAGE WITH TEXT FUNCTION CONTAINS BACKGROUND IMAGE AND ALL ELEMENTS ON TOP OF IT
- * */
-@Composable
-fun TopImageWithText(
-    modifier: Modifier = Modifier
-
-){
 
 
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(239.dp)
-
-    ) {
-
-
-        Image(
-            painter = painterResource(id = R.drawable.top_image),
-            contentDescription = "image description",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(239.dp)
-        )
-
-
-        Image(
-            painter = painterResource(id = R.drawable.concurrency_text),
-            contentDescription = "image description",
-            contentScale = ContentScale.FillBounds,
-            modifier = Modifier
-                .width(150.dp)
-                .height(40.dp)
-                .padding(5.dp)
-
-
-        )
-
-
-
-        Text(
-
-            modifier = Modifier
-                .height(160.dp)
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.BottomCenter),
-
-            text = "Currency Converter",
-            style = TextStyle(
-                fontSize = 25.sp,
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight(600),
-                color = Color(0xFFFFFFFF),
-
-                )
-
-
-        )
-
-
-        Text(
-            modifier= Modifier
-                .height(180.dp)
-                .fillMaxWidth()
-                .wrapContentSize(Alignment.BottomCenter),
-
-            text = "Check live foreign currency exchange rates",
-            style = TextStyle(
-                fontSize = 14.sp,
-                fontFamily = FontFamily.Monospace,
-                fontWeight = FontWeight(400),
-                color = Color(0xFFFFFFFF),
-            )
-        )
-
-
-
-        CustomSwitch( )
-
-
-
-
-    }
-
-
-}
 /**COMPARE BOX FUNCTION CONTAINS AMOUNT AND FROM TEXT, TEXT FIELD FOR AMOUNT, DROPDOWN MENU
 AND TARGET CURRENCY TEXT
  * */
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun CompareBox(viewModel: APIViewModel){
+private fun CompareBox(favouritesViewModel: FavouritesViewModel){
 
     var amountFrom by remember {
         mutableStateOf(1)
@@ -257,7 +171,7 @@ private fun CompareBox(viewModel: APIViewModel){
             ) {
 
                 DropDownMenu(onItemClicked = {
-                   viewModel.currentComparedFrom.value = it
+                  // viewModel.currentComparedFrom.value = it
                 })
 
 
@@ -308,7 +222,7 @@ private fun CompareBox(viewModel: APIViewModel){
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 DropDownMenu(onItemClicked = {
-                    viewModel.currentComparedTo1.value = it
+                   // viewModel.currentComparedTo1.value = it
                 })
             }
             Row(
@@ -317,7 +231,7 @@ private fun CompareBox(viewModel: APIViewModel){
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 DropDownMenu(onItemClicked = {
-                    viewModel.currentComparedTo2.value = it
+                  //  viewModel.currentComparedTo2.value = it
                 })
             }
         }
